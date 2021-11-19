@@ -1,0 +1,25 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+        // write your code here
+        Scanner sc= new Scanner(System.in);
+        int num=sc.nextInt();
+        pzz(num);
+    }
+
+        public static void pzz(int num)
+        {
+            if (num==0)
+            {
+                return;
+            }
+            System.out.print(num+" ");
+            pzz(num-1); //21112
+            System.out.print(num+" ");
+            pzz(num-1);
+             System.out.print(num+" ");
+        }
+}

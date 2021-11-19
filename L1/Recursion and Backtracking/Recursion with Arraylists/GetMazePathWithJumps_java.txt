@@ -1,0 +1,56 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+
+        Scanner sc = new Scanner(System.in);
+        int row = sc.nextInt();
+        int col = sc.nextInt();
+
+        System.out.print("[" + String.join(", ", getMazePaths(1, 1, row, col)) + "]");
+    }
+
+    // sr - source row
+    // sc - source column
+    // dr - destination row
+    // dc - destination column
+    public static ArrayList < String > getMazePaths(int sr, int sc, int dr, int dc) {
+
+        if (sr == dr && sc == dc) {
+            ArrayList < String > bPath = new ArrayList();
+            bPath.add("");
+            return bPath;
+        }
+
+        ArrayList < String > hPath = new ArrayList();
+        ArrayList < String > vPath = new ArrayList();
+        ArrayList < String > dPath = new ArrayList();
+        ArrayList < String > fres = new ArrayList();
+
+        for (int jump = 1; jump <= (dc - sc); jump++) {
+            hPath = getMazePaths(sr, sc + jump, dr, dc);
+
+            for (var item: hPath) {
+                fres.add("h" + jump + item);
+            }
+        }
+
+        for (int jump = 1; jump <= (dr - sr); jump++) {
+            vPath = getMazePaths(sr + jump, sc, dr, dc);
+            for (var item: vPath) {
+                fres.add("v" + jump + item);
+            }
+        }
+        for (int jump = 1; jump <= (dc - sc) && jump <= (dr - sr); jump++) {
+            dPath = getMazePaths(sr + 1, sc + 1, dr, dc);
+            for (var item: dPath) {
+                fres.add("d" + jump + item);
+            }
+        }
+
+        return fres;
+    }
+
+}

@@ -1,0 +1,56 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+        Scanner sc = new Scanner(System.in);
+        int stair= sc.nextInt();
+        ArrayList<String> res=getStairPaths(stair);
+
+
+System.out.print("["+String.join(", ", getStairPaths(stair))+"]");
+
+    }
+
+    public static ArrayList<String> getStairPaths(int stair) {
+
+        if (stair == 0)
+        {
+            ArrayList<String> bpath = new ArrayList();
+            bpath.add("");
+            return bpath;
+        }
+        else if(stair<0)
+        {
+            return new ArrayList<String>();
+
+        }
+
+        ArrayList<String> path1 = getStairPaths(stair - 1); //5 4 3 2 1
+        ArrayList<String> path2 = getStairPaths(stair - 2);//5 3 1
+        ArrayList<String> path3 = getStairPaths(stair - 3);
+
+
+        ArrayList<String> fres = new ArrayList();
+
+for(var item: path1)
+{
+            fres.add("1" + item);
+}
+for(var item: path2)
+{
+            fres.add("2" + item);
+}
+for(var item: path3)
+{
+            fres.add("3" + item);
+}
+
+return fres;
+
+
+
+    }
+
+}

@@ -1,0 +1,38 @@
+import java.io.*;
+import java.util.*;
+
+
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+Scanner scn= new Scanner(System.in);
+String str=scn.nextLine();
+System.out.print("["+String.join(", ", gss(str))+"]");
+    }
+
+    public static ArrayList<String> gss(String str) {
+        
+        if(str.length()==0)
+        {
+            ArrayList<String> bres= new ArrayList();
+            bres.add("");
+            return bres;
+        }
+
+        char current=str.charAt(0);
+        String sub= str.substring(1);
+        ArrayList<String> rres= gss(sub);
+        ArrayList<String> finalres= new ArrayList();
+
+        for(String item: rres)
+        {
+         finalres.add(item);
+        }
+        for(String item: rres)
+        {
+            finalres.add(current+item);
+        }
+        return finalres;
+    }
+
+}
