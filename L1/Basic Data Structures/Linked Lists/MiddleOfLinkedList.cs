@@ -27,3 +27,8 @@ public class Solution
 //fast pointer is moving 2 times slow pointer
 // stop at list node (this will be odd length case) || stop at node after last which will be null (this is even length case)
 // once fast reaches end slow will be at the middle node
+
+// Note if there is even list there will be two mid
+// ideally always 2nd mid is output 
+// if output should be 1st mid while loop condition will be --- fast != null && fast.next != null
+// if output should be 2nd mid then condition will be fast.next != null && fast.next.next != null
