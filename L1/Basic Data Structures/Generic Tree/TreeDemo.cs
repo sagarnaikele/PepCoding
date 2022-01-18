@@ -138,6 +138,7 @@ public class TreeDemo
         Node root = null;
         for (int i = 0; i < arr.Length; i++)
         {
+            // going upword in tree
 
             if (arr[i] != -1)
             {

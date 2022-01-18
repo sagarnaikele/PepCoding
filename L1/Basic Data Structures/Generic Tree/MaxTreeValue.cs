@@ -21,36 +21,6 @@ public class TreeDemo
     public static void MaxTreeValue()
     {
 
-        // Node root = new Node(10);
-
-        // Node twenty = new Node(20);
-        // Node thirty = new Node(30);
-        // Node fourty = new Node(40);
-        // root.Childrens.AddRange(new List<Node> { twenty, thirty, fourty });
-
-
-        // Node fifty = new Node(50);
-        // Node sixty = new Node(60);
-        // twenty.Childrens.AddRange(new List<Node> { fifty, sixty });
-
-        // Node seventy = new Node(70);
-        // Node eighty = new Node(80);
-        // Node ninety = new Node(90);
-        // thirty.Childrens.AddRange(new List<Node> { seventy, eighty, ninety });
-
-        // Node hunred = new Node(100);
-        // fourty.Childrens.AddRange(new List<Node> { hunred });
-
-        // Node hunredten = new Node(110);
-        // Node hunredtenty = new Node(120);
-        // eighty.Childrens.AddRange(new List<Node> { hunredten, hunredtenty });
-
-        // LevelOrder(root);
-        // Console.WriteLine("---------------------------------");
-        // LevelOrderByLevel(root);
-        // Console.WriteLine("---------------------------------");
-        //LevelOrderByLevelZigZag(root);  //Home work
-
         LevelOrderByLevel(ConstructTree());
 
     }
