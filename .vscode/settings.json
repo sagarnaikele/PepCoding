@@ -1,8 +1,0 @@
-{
-    "files.autoSave": "onWindowChange",
-    "editor.cursorBlinking": "phase",
-    "editor.fontSize": 14,
-    "editor.formatOnSave": true,
-    "editor.formatOnPaste": true,
-    "workbench.sideBar.location": "left"
-}

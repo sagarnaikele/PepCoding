@@ -16,105 +16,91 @@ public class Pair
     public Node node;
 }
 
+// creating mover class for approach 2
+public class DiameterMover
+{
+    public int Diameter;
+}
 
-public static class RecursiveTraversal
+// creating mover class for approach 4
+public class LBSTPair
+{
+    public int Min = Int32.MaxValue;
+    public int Max = Int32.MinValue;
+    public bool IsBST = true;
+    public Node LargestBST = null;
+    public int Size = 0;
+}
+
+
+public static class LargestIsBinarySearchTree
 {
     public static void Main()
     {
         int[] arr = new int[] { 50, 25, 12, -1, -1, 37, 30, -1, -1, -1, 75, 62, -1, 70, -1, -1, 87, -1, -1 };
         var tree = ConstrunctTree(arr);
-        Console.WriteLine("-------------Pre---------------------");
-        PrintPreOrder(tree);
-        Console.WriteLine("-------------In---------------------");
-        PrintInorder(tree);
-        Console.WriteLine("-------------Post---------------------");
-        PrintPostOrder(tree);
 
-        Console.WriteLine("-------------Iterative---------------------");
-        Iterative(tree);
+
+        Console.WriteLine("-------------Approach 1-----------------");
+        Diameter1(tree);
+
     }
 
-
-    public static void PrintInorder(Node node)
+    public static LBSTPair FindLargestBst(Node node)
     {
-        if (node == null) return;
-
-        PrintInorder(node.left);
-        Console.Write(node.data + " ");
-        PrintInorder(node.right);
-    }
-    public static void PrintPreOrder(Node node)
-    {
-        if (node == null) return;
-        Console.Write(node.data + " ");
-        PrintPreOrder(node.left);
-        PrintPreOrder(node.right);
-    }
-    public static void PrintPostOrder(Node node)
-    {
-        if (node == null) return;
-
-        PrintPostOrder(node.left);
-        PrintPostOrder(node.right);
-        Console.Write(node.data + " ");
-    }
-    public static void Iterative(Node root)
-    {
-        Stack<Pair> stk = new Stack<Pair>();
-
-        Pair p = new Pair();
-        p.node = root;
-        p.state = 1;
-
-        stk.Push(p);
-
-        StringBuilder pre = new StringBuilder();
-        StringBuilder inorder = new StringBuilder();
-        StringBuilder postorder = new StringBuilder();
-
-        while (stk.Count > 0)
+        if (node == null)
         {
-            var peek = stk.Peek();
-            if (peek.state == 1) // 1 is preorder
-            {
-                pre.Append(peek.node.data.ToString() + " ");
-                peek.state++;
-                if (peek.node.left != null)
-                {
-                    Pair leftp = new Pair();
-                    leftp.node = peek.node.left;
-                    leftp.state = 1;
-                    stk.Push(leftp);
-                }
-            }
-            else if (peek.state == 2) //2 is inorder
-            {
-                inorder.Append(peek.node.data.ToString() + " ");
-                peek.state++;
-                if (peek.node.right != null)
-                {
-                    Pair rightp = new Pair();
-                    rightp.node = peek.node.right;
-                    rightp.state = 1;
-                    stk.Push(rightp);
-                }
-            }
-            else //3 is postorder
-            {
-                postorder.Append(peek.node.data.ToString() + " ");
-                stk.Pop();
-            }
+            return new LBSTPair();
         }
 
-        Console.WriteLine(pre.ToString());
-        Console.WriteLine(inorder.ToString());
-        Console.WriteLine(postorder.ToString());
+        LBSTPair lBst = FindLargestst(node.left);
+        LBSTPair rBst = FindLargestst(node.right);
+
+        LBSTPair nBst = new LBSTPair();
+
+        nBst.Min = Math.Min(node.data, Math.Min(lBst.Min, rBst.Min));
+        nBst.Max = Math.Max(node.data, Math.Max(lBst.Max, rBst.Max));
+        bool isNodeBst = node.data > lBst.Max && node.data < rBst.Min;
+
+        nBst.IsBST = lBst.IsBST && rBst.IsBST && isNodeBst;
+
+        if (nBst.IsBST)
+        {
+            int currentSize = lBst.Size + rBst.Size + 1;
+            nBst.Size = currentSize;
+            nBst.node = node;
+        }
+        else
+        {
+            if (lBst.Size > rBst.Size)
+            {
+                nBst.Size = lBst.Size;
+                nBst.node = lBst;
+
+            }
+            else
+            {
+                nBst.Size = rBst.Size;
+                nBst.node = rBst;
+            }
+        }
+        return nBst;
     }
 
 
 
 
+    public static void Display(Node node)
+    {
 
+        if (node == null) return;
+        string str = "<-- " + node.data + " -->";
+        string left = node.left != null ? node.left.data.ToString() : ".";
+        string right = node.right != null ? node.right.data.ToString() : ".";
+        Console.WriteLine(left + str + right);
+        Display(node.left);
+        Display(node.right);
+    }
     public static Node ConstrunctTree(int[] arr)
     {
         // create stack which will store pair of node with state

@@ -16,103 +16,117 @@ public class Pair
     public Node node;
 }
 
+// creating mover class for approach 2
+public class DiameterMover
+{
+    public int Diameter;
+}
 
-public static class RecursiveTraversal
+// creating mover class for approach 4
+public class DiaPair
+{
+    public int Diameter = 0;
+    public int Height = -1;
+}
+
+
+public static class IsBalancedTree
 {
     public static void Main()
     {
         int[] arr = new int[] { 50, 25, 12, -1, -1, 37, 30, -1, -1, -1, 75, 62, -1, 70, -1, -1, 87, -1, -1 };
         var tree = ConstrunctTree(arr);
-        Console.WriteLine("-------------Pre---------------------");
-        PrintPreOrder(tree);
-        Console.WriteLine("-------------In---------------------");
-        PrintInorder(tree);
-        Console.WriteLine("-------------Post---------------------");
-        PrintPostOrder(tree);
 
-        Console.WriteLine("-------------Iterative---------------------");
-        Iterative(tree);
+
+        Console.WriteLine("-------------Approach 1-----------------");
+        Diameter1(tree);
+        Console.WriteLine(diameter);
+        Console.WriteLine("-------------Approach 2-----------------");
+        DiameterMover dm = new DiameterMover();
+        Diameter2(tree, dm);
+        Console.WriteLine(dm.Diameter);
+        Console.WriteLine("-------------Approach 3-----------------");
+        Console.WriteLine(Diameter1(tree));
+        Console.WriteLine("-------------Approach 4-----------------");
+        var res = Diameter4(tree);
+        Console.WriteLine(res.Diameter);
     }
 
 
-    public static void PrintInorder(Node node)
-    {
-        if (node == null) return;
+    #region Diameter Approach 1 and 2
 
-        PrintInorder(node.left);
-        Console.Write(node.data + " ");
-        PrintInorder(node.right);
+
+    // create varaible in stack for approach 1
+    public static int diameter;
+
+    public static bool IsBalanced(Node node)
+    {
+        if (node == null || (node.left == null && node.right = null)) return true;
+        else if (node.left == null || node.right = null) return false;
+        return node.left.data < node.data && node.right.data < node.data && IsBalanced(node.left) && IsBalanced(node.right);
     }
-    public static void PrintPreOrder(Node node)
+    public static int Diameter2(Node node, DiameterMover dm)
     {
-        if (node == null) return;
-        Console.Write(node.data + " ");
-        PrintPreOrder(node.left);
-        PrintPreOrder(node.right);
+        if (node == null) return -1;
+
+        int lHeight = Diameter2(node.left, dm);
+        int rHeight = Diameter2(node.right, dm);
+
+        int rootHeight = Math.Max(lHeight, rHeight) + 1;
+
+        int currDiameter = lHeight + rHeight + 2;
+        dm.Diameter = currDiameter > dm.Diameter ? currDiameter : dm.Diameter;
+        return rootHeight;
     }
-    public static void PrintPostOrder(Node node)
+
+    #endregion
+
+
+    public static DiaPair Diameter4(Node node)
     {
-        if (node == null) return;
-
-        PrintPostOrder(node.left);
-        PrintPostOrder(node.right);
-        Console.Write(node.data + " ");
-    }
-    public static void Iterative(Node root)
-    {
-        Stack<Pair> stk = new Stack<Pair>();
-
-        Pair p = new Pair();
-        p.node = root;
-        p.state = 1;
-
-        stk.Push(p);
-
-        StringBuilder pre = new StringBuilder();
-        StringBuilder inorder = new StringBuilder();
-        StringBuilder postorder = new StringBuilder();
-
-        while (stk.Count > 0)
+        if (node == null)
         {
-            var peek = stk.Peek();
-            if (peek.state == 1) // 1 is preorder
-            {
-                pre.Append(peek.node.data.ToString() + " ");
-                peek.state++;
-                if (peek.node.left != null)
-                {
-                    Pair leftp = new Pair();
-                    leftp.node = peek.node.left;
-                    leftp.state = 1;
-                    stk.Push(leftp);
-                }
-            }
-            else if (peek.state == 2) //2 is inorder
-            {
-                inorder.Append(peek.node.data.ToString() + " ");
-                peek.state++;
-                if (peek.node.right != null)
-                {
-                    Pair rightp = new Pair();
-                    rightp.node = peek.node.right;
-                    rightp.state = 1;
-                    stk.Push(rightp);
-                }
-            }
-            else //3 is postorder
-            {
-                postorder.Append(peek.node.data.ToString() + " ");
-                stk.Pop();
-            }
+            DiaPair d = new DiaPair();
+            return d;
+
         }
 
-        Console.WriteLine(pre.ToString());
-        Console.WriteLine(inorder.ToString());
-        Console.WriteLine(postorder.ToString());
+
+        DiaPair leftPair = Diameter4(node.left);
+        DiaPair rightPair = Diameter4(node.right);
+
+
+        DiaPair dpRoot = new DiaPair();
+        dpRoot.Height = Math.Max(leftPair.Height, rightPair.Height) + 1;
+        dpRoot.Diameter = Math.Max(leftPair.Height + rightPair.Height + 2, Math.Max(rightPair.Diameter, leftPair.Diameter));
+        return dpRoot;
+    }
+
+    public static Node ToNormal(Node node)
+    {
+        if (node == null)
+            return node;
+
+        Node left = ToNormal(node.left.left);
+        Node right = ToNormal(node.right);
+
+        node.left = left;
+        return node;
     }
 
 
 
+    public static void Display(Node node)
+    {
+
+        if (node == null) return;
+        string str = "<-- " + node.data + " -->";
+        string left = node.left != null ? node.left.data.ToString() : ".";
+        string right = node.right != null ? node.right.data.ToString() : ".";
+        Console.WriteLine(left + str + right);
+        Display(node.left);
+        Display(node.right);
+    }
 
 
     public static Node ConstrunctTree(int[] arr)

@@ -15,19 +15,48 @@ public class Node
 }
 
 
-public class LineWiseGenericTree
+public class LinearizeGenericTree
 {
 
     public static void Main()
     {
         var node = ConstructTree();
+        Console.WriteLine("-------------------Input-------------");
         LevelOrderByLevel(node);
-        LineWise(node);
+        LinearizeSelf(node);
+        Console.WriteLine("-------------------Self--------------");
+        LevelOrderByLevel(node);
+
+
+        Linearize(node);
+        Console.WriteLine("---------Efficient Way O(n)----------");
         LevelOrderByLevel(node);
 
     }
 
-    public static void LineWise(Node node)
+    public static Node Linearize(Node node)
+    {
+        if (node.Childrens.Count() == 0)
+            return node;
+
+        Node lastChild = node.Childrens.ElementAt(node.Childrens.Count - 1);
+        Node lastTail = Linearize(lastChild);
+
+        while (node.Childrens.Count() > 1)
+        {
+            Node secondLastChild = node.Childrens.ElementAt(node.Childrens.Count - 2);
+            Node slastTail = Linearize(secondLastChild);
+            slastTail.Childrens.Add(lastChild);
+            node.Childrens.RemoveAt(node.Childrens.Count - 1);
+            lastChild = secondLastChild;
+        }
+        return lastTail;
+
+    }
+
+
+
+    public static void LinearizeSelf(Node node)
     {
 
         //loop through number of child
@@ -43,7 +72,7 @@ public class LineWiseGenericTree
 
         foreach (var child in node.Childrens)
         {
-            LineWise(child);
+            LinearizeSelf(child);
         }
 
     }
